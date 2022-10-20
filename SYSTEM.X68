@@ -4,7 +4,7 @@
             
 ; ------------------------------------------------------------------------------
 SYSINIT
-; INITIALIZE SYSTEM.
+; INITIALIZES SYSTEM AND ENABLES INTERRUPTIONS
 ; INPUT    : NONE
 ; OUTPUT   : NONE
 ; MODIFIES : NONE
@@ -16,7 +16,7 @@ SYSINIT
             MOVE.L  #KBDUPD,($84)
             
             MOVE.W  SR,-(A7)
-            ANDI.W  #$DFFF,(A7)
+            ANDI.W  #$D8FF,(A7)     ; ENABLES INTERRUPTIONS AND 
             RTE
             
 ; ------------------------------------------------------------------------------
@@ -43,6 +43,14 @@ SCRINIT
             MOVE.B  #11,D0
             MOVE.W  #$FF00,D1
             TRAP    #15
+            
+            ; INSTALL SCRISR INTO INT. NUM
+            ; SCRINTNM
+            MOVE.L #SCRISR,(#60+4*SCRINTNM)
+
+            
+            ; ENABLE HARDWARE
+            
             
             ; ENABLE DOUBLE BUFFER
             MOVE.B  #92,D0
