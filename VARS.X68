@@ -14,8 +14,14 @@ MNPLAY      DC.B    'Play',0
 MNOPTION    DC.B    'Options',0
 MNEXIT      DC.B    'Exit',0
 
+; --- MENU POSITON -------------------------------------------------------------
 
-*~Font name~Fixedsys~
-*~Font size~10~
-*~Tab type~1~
-*~Tab size~4~
+MENUPOS     DC.W    $2010   ; idealmente debería cambiarlo para que sea relativo a SCRWIDHT y SCRHEIGH pero no me sale
+MENUMOV     DC.B    MENUMAXM/2              ; AMOUNT OF MOVIMENTS LEFT BEFORE CHANGING DIRECTION
+
+; --- TIMED INTERRUPT RELATED VARIABLES ----------------------------------------
+
+SCRINTCT    DS.B    1                       ; INTERRUPT COUNTER
+SCRCYCCT    DS.B    1                       ; CYCLE COUNTER
+            DS.W    0
+
