@@ -20,7 +20,7 @@ MENUINIT
 MENUPLOT
     ; SET MENU TITLE POSITION
     MOVE.B  #11,D0
-    MOVE.W  #$2010,D1 ;#SCRWIDTH/2<<8|SCRHEIGH/2,D1
+    MOVE.W  (MENUPOS),D1 ;
     TRAP    #15
     ; PRINT MENU TITLE
     LEA.L   MNTITLE,A1
@@ -29,9 +29,20 @@ MENUPLOT
     
     RTS
     
+MENUUPD
+    MOVE.B  D0, -(A7)
+    MOVE.B  (SCRCYCCT),D0
+    ADD.B   D0,D0 ; MULTIPLICO POR 2, SI NO QUEDA NADA ES QUE ERA $80 O $00
+    BNE.B   .NOTHING
+    
+    MOVE.B  (MENUDIR),D0
+    ADD.B   D0, (MENUPOS+1)
+    SUBQ.B  #1,(MENUMOV)
+    BPL.B   .NOTHING
+    
+    MOVE.B  #MENUMAXM, (MENUMOV)
+    NEG.B   (MENUDIR)
+.NOTHING
+    MOVE.B  (A7)+, D0
+    RTS
 
-
-*~Font name~Courier New~
-*~Font size~10~
-*~Tab type~1~
-*~Tab size~4~
