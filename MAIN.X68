@@ -16,6 +16,7 @@ START
 
 ; --- INITIALIZATION -----------------------------------------------------------
 
+            ORI.W   #$0700,SR
             JSR     SYSINIT
             JSR     MENUINIT
 .LOOP
@@ -24,33 +25,25 @@ START
 
 ; READ INPUT DEVICES
 
-            TRAP    #1
+            TRAP    #KBDUPTN
 
 ; UPDATE GAME LOGIC
-            ;JSR     MENUUPD          
+            JSR     MENUUPD          
 
 ; --- SYNC ---------------------------------------------------------------------
+
+.WINT       TST.B   (SCRINTCT)
+            BEQ     .WINT
+            CLR.B   (SCRINTCT)
 
 ; --- PLOT ---------------------------------------------------------------------
 
             JSR     MENUPLOT
             
-            TRAP    #0                      ; UPDATE DOUBLE BUFFER
+            TRAP    #SCRUPTN                    ; UPDATE DOUBLE BUFFER
 
             BRA     .LOOP
 
             SIMHALT
             
             END     START
-
-
-
-
-
-
-
-
-*~Font name~Fixedsys~
-*~Font size~10~
-*~Tab type~1~
-*~Tab size~4~
