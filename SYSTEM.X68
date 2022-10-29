@@ -4,16 +4,18 @@
             
 ; ------------------------------------------------------------------------------
 SYSINIT
-; INITIALIZES SYSTEM AND ENABLES INTERRUPTIONS
+; INITIALIZE SYSTEM AND ENABLES INTERRUPTIONS
 ; INPUT    : NONE
 ; OUTPUT   : NONE
 ; MODIFIES : NONE
 ; ------------------------------------------------------------------------------
+
+            MOVE.L  #SCRPLOT,($80+SCRUPTN*4)
+            MOVE.L  #KBDUPD,($80+KBDUPTN*4)
+            MOVE.L  #SCRTIM,($60+SCRINTN*4)
+            
             JSR     SCRINIT
             JSR     KBDINIT
-            
-            MOVE.L  #SCRPLOT,($80)
-            MOVE.L  #KBDUPD,($84)
             
             MOVE.W  SR,-(A7)
             ANDI.W  #$D8FF,(A7)     ; ENABLES INTERRUPTIONS AND 
@@ -28,7 +30,7 @@ SCRINIT
 ; MODIFIES : NONE
 ; ------------------------------------------------------------------------------
 
-            MOVEM.L D0-D1,-(A7)
+            MOVEM.L D0-D3,-(A7)
 
             ; SET SCREEN RESOLUTION
             MOVE.B  #33,D0
@@ -43,21 +45,23 @@ SCRINIT
             MOVE.B  #11,D0
             MOVE.W  #$FF00,D1
             TRAP    #15
-            
-            ; INSTALL SCRISR INTO INT. NUM
-            ; SCRINTNM
-            MOVE.L #SCRISR,(#60+4*SCRINTNM)
 
-            
-            ; ENABLE HARDWARE
-            
-            
             ; ENABLE DOUBLE BUFFER
             MOVE.B  #92,D0
             MOVE.B  #17,D1
             TRAP    #15
             
-            MOVEM.L (A7)+,D0-D1
+            ; ENABLE TIMED INTERRUPT
+            MOVE.B  #32,D0
+            MOVE.B  #6,D1
+            MOVE.B  #$80|SCRINTN,D2
+            MOVE.L  #1000/SCRFPS,D3
+            TRAP    #15
+            
+            ; CLEAR INTERRUPT COUNTER
+            CLR.W   (SCRINTCT) 
+            
+            MOVEM.L (A7)+,D0-D3
             
             RTS
 
@@ -78,6 +82,17 @@ SCRPLOT
             MOVE.W  #$FF00,D1
             TRAP    #15
             MOVEM.W (A7)+,D0-D1
+            RTE
+            
+; ------------------------------------------------------------------------------
+SCRTIM
+; TIMED INTERRUPT SERVICE ROUTINE
+; INPUT    : NONE
+; OUTPUT   : NONE
+; MODIFIES : NONE
+; ------------------------------------------------------------------------------
+            ADDQ.B  #1,(SCRINTCT)
+            ADDQ.B  #1,(SCRCYCCT)
             RTE
 
 ; ------------------------------------------------------------------------------
@@ -142,9 +157,3 @@ KBDUPD
             ROXL.B  #1,D2
             DBRA.W  D3,.LOOP
             RTS
-
-
-*~Font name~Courier New~
-*~Font size~10~
-*~Tab type~1~
-*~Tab size~4~
