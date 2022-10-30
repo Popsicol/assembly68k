@@ -30,5 +30,4 @@ SCRINTN     EQU     1                       ; TIMED INTERRUPT NUMBER
 ; --- MENU CONSTANTS -----------------------------------------------------------
 
 MENUMAXM    EQU     4                       ; MENU MAX MOVEMENTS
-MENUDIR     EQU     2
 
