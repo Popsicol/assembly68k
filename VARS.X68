@@ -18,6 +18,7 @@ MNEXIT      DC.B    'Exit',0
 
 MENUPOS     DC.W    $2010   ; idealmente debería cambiarlo para que sea relativo a SCRWIDHT y SCRHEIGH pero no me sale
 MENUMOV     DC.B    MENUMAXM/2              ; AMOUNT OF MOVIMENTS LEFT BEFORE CHANGING DIRECTION
+MENUDIR     DC.B    2
 
 ; --- TIMED INTERRUPT RELATED VARIABLES ----------------------------------------
 
