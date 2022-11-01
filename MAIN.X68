@@ -7,18 +7,20 @@
 
             ORG     $1000
             
-            INCLUDE "CONST.X68"
-            INCLUDE "SYSTEM.X68"
-            INCLUDE "MENU.X68"
-            INCLUDE "VARS.X68"  
+            INCLUDE 'CONST.X68'
+            INCLUDE 'SYSTEM.X68'
+            INCLUDE 'MENU.X68'
+            INCLUDE 'VARS.X68'  
+            INCLUDE 'PLAYER.X68'
             
 START
 
 ; --- INITIALIZATION -----------------------------------------------------------
-
+* COMENTO LO DEL MENU PQ NECESITO "QUITARLO" PARA TRABAJAR EN LA PANTALLA POSTERIOR 
             ORI.W   #$0700,SR
             JSR     SYSINIT
-            JSR     MENUINIT
+            ;JSR     MENUINIT
+            JSR		PLAYERINIT
 .LOOP
 
 ; --- UPDATE -------------------------------------------------------------------
@@ -28,7 +30,8 @@ START
             TRAP    #KBDUPTN
 
 ; UPDATE GAME LOGIC
-            JSR     MENUUPD          
+            ;JSR     MENUUPD  
+			JSR PLAYERUPD        
 
 ; --- SYNC ---------------------------------------------------------------------
 
@@ -38,12 +41,14 @@ START
 
 ; --- PLOT ---------------------------------------------------------------------
 
-            JSR     MENUPLOT
-            
-            TRAP    #SCRUPTN                    ; UPDATE DOUBLE BUFFER
-
+            ;JSR     MENUPLOT
+            JSR PLAYERPLOT
+            TRAP    #SCRUPTN                    ; UPDATE DOUBLE BUFFER		
             BRA     .LOOP
 
             SIMHALT
             
             END     START
+
+
+
