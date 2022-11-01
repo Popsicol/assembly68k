@@ -5,17 +5,19 @@
 ; --- SCREEN RELATED CONSTANTS -------------------------------------------------
 
 SCRWIDTH    EQU    640                     ; SCREEN WIDTH
-SCRHEIGH    EQU   320  ; 480                     ; SCREEN HEIGHT
-SCRFPS      EQU     50                      ; SCREEN FRAMES PER SECOND
+SCRHEIGH    EQU   320  ; 480               ; SCREEN HEIGHT
+SCRFPS      EQU     50                     ; SCREEN FRAMES PER SECOND
 
 ; --- KEYCODES -----------------------------------------------------------------
 
+KBDLEFT     EQU     'A'
 KBDUP       EQU     'W'
 KBDRIGHT    EQU     'D'
 KBDDOWN     EQU     'S'
-KBDLEFT     EQU     'A'
 KBDACTION   EQU     'X'
 KBDPAUSE    EQU     'P'
+KBDFIRE		EQU		'F'
+KBDINV		EQU		'E'
 
 ; --- TRAP NUMBERS -------------------------------------------------------------
 
@@ -30,4 +32,9 @@ SCRINTN     EQU     1                       ; TIMED INTERRUPT NUMBER
 ; --- MENU CONSTANTS -----------------------------------------------------------
 
 MENUMAXM    EQU     4                       ; MENU MAX MOVEMENTS
+
+; --- PLAYER RELATED CONSTANTS -----------------------------------------------------------
+
+PLAYERSPEED 	EQU		4						; SPEED OF MAIN PLAYER
+
 
